@@ -13,6 +13,7 @@ Database::getConnection("prod");
 Router::add('GET', '/', DashboardController::class, 'index');
 Router::add('GET', '/users/register', HomeController::class, 'register');
 Router::add('GET', '/users/login', HomeController::class, 'login');
+Router::add('GET', '/users/logout', HomeController::class, 'logout');
 Router::add('POST', '/users/register', HomeController::class, 'postRegister');
 Router::add('POST', '/users/login', HomeController::class, 'postLogin');
 
