@@ -9,13 +9,13 @@ use Tatas\Belajar\PHP\MVC\Repository\SessionRepository;
 use Tatas\Belajar\PHP\MVC\Repository\UserRepository;
 use Tatas\Belajar\PHP\MVC\Service\SessionService;
 
-class MustLoginMiddlewareTest extends TestCase{
-    private MustLoginMiddleware $middleware;
+class MustNotLoginMiddlewareTest extends TestCase{
+    private MustNotLoginMiddleware $middleware;
     private UserRepository $userRepository;
     private SessionRepository $sessionRepository;
         function setUp(): void
         {
-            $this->middleware=new MustLoginMiddleware();
+            $this->middleware=new MustNotLoginMiddleware();
         putenv("mode=test");
         $this->userRepository=new UserRepository(Database::getConnection());
         $this->sessionRepository=new SessionRepository(Database::getConnection());
@@ -26,7 +26,7 @@ class MustLoginMiddlewareTest extends TestCase{
         
     function testBeforeGuest(){
         $this->middleware->before();
-        $this->expectOutputRegex("[Location:/users/login]");
+        $this->expectOutputString("");
     }
     function testBeforeLoginUser(){
         $user=new User();
@@ -40,6 +40,6 @@ class MustLoginMiddlewareTest extends TestCase{
         $this->sessionRepository->save($session);
         $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
         $this->middleware->before();
-        $this->expectOutputString("");
+        $this->expectOutputRegex("[Location:/]");
     }
 }
