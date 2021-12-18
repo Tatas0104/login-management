@@ -126,12 +126,9 @@ class HomeControllerTest extends TestCase{
         $this->sessionRepository->save($session );
         $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
         $this->homeController->logout();
-
         $this->expectOutputRegex("[Location: /]");
         $this->expectOutputRegex("[X-Tatas-COOKIE: ]");
     }
-
-
 }
 };
 
