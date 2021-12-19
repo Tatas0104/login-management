@@ -1,6 +1,6 @@
 # PHP LOGIN MANAGEMENT
 ## Cara download
-> git clone  https://github.com/tatastuhu/login-management 
+> git clone  https://github.com/tatastuhu/login-management.git
 ## Setup Database
 setup dabase bisa di lakukan dengan cara mengguanakan file database.sql
 ```
