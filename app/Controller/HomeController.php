@@ -8,6 +8,7 @@ use Tatas\Belajar\PHP\MVC\Config\Database;
 use Tatas\Belajar\PHP\MVC\Exception\ValidationException;
 use Tatas\Belajar\PHP\MVC\Model\UserLoginRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserRegisterRequest;
+use Tatas\Belajar\PHP\MVC\Model\UserUpdatePasswordRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserUpdateProfileRequest;
 use Tatas\Belajar\PHP\MVC\Repository\SessionRepository;
 use Tatas\Belajar\PHP\MVC\Repository\UserRepository;
@@ -107,5 +108,33 @@ class HomeController
         }
 
     }
-
+    public function updatePassword(){
+        $user=$this->sessionService->current();
+        view::render('password',[
+            "title"=>"Update password",
+            "user"=>[
+                "id"=>$user->id
+            ]
+        ]);
+    }
+    public function postUpdatePassword(){
+        $user=$this->sessionService->current();
+        $request=new UserUpdatePasswordRequest();
+        $request->id=$user->id;
+        $request->oldPassword=$_POST['oldPassword'];
+        $request->newPassword=$_POST['newPassword'];
+        try{
+            $this->userService->updatePassword($request);
+            View::redirect('/');
+        }catch(ValidationException $exception){
+            view::render('password',[
+                "title"=>"Update password",
+                "user"=>[
+                    "id"=>$user->id,
+                    "oldPassword"=>$_POST['oldPassword']
+                ],
+                "error"=>$exception->getMessage()
+            ]);
+    }
+    }
 }

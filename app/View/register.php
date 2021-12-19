@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-floating mb-3">
                         <input name="password" type="password" class="form-control" id="password"
-                            placeholder="password" />
+                            placeholder="password" autocomplete="off" />
                         <label for="password">Password</label>
                     </div>
                     <button class="w-100 btn btn-lg btn-primary" type="submit">

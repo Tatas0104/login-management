@@ -13,15 +13,24 @@ Database::getConnection("prod");
 // Router::add('GET', '/products/([0-9a-zA-Z]*)/categories/([0-9a-zA-Z]*)', ProductController::class, 'categories');
 
 Router::add('GET', '/', DashboardController::class, 'index');
-Router::add('GET', '/users/register', HomeController::class, 'register',[MustNotLoginMiddleware::class]);
+Router::add('GET', '/users/register', HomeController::class, 'register',
+[MustNotLoginMiddleware::class]);
 Router::add('GET', '/users/login', HomeController::class, 'login',
 [MustNotLoginMiddleware::class]);
 Router::add('GET', '/users/logout', HomeController::class, 'logout',
 [MustLoginMiddleware::class]);
-Router::add('POST', '/users/register', HomeController::class, 'postRegister',[MustNotLoginMiddleware::class]);
-Router::add('POST', '/users/login', HomeController::class, 'postLogin',[MustNotLoginMiddleware::class]);
-Router::add('POST', '/users/profile', HomeController::class, 'postUpdateProfile',[MustLoginMiddleware::class]);
+Router::add('POST', '/users/register', HomeController::class, 'postRegister',
+[MustNotLoginMiddleware::class]);
+Router::add('POST', '/users/login', HomeController::class, 'postLogin',
+[MustNotLoginMiddleware::class]);
+Router::add('POST', '/users/profile', HomeController::class, 'postUpdateProfile',
+[MustLoginMiddleware::class]);
 Router::add('GET', '/users/profile', HomeController::class, 'updateProfile',
 [MustLoginMiddleware::class]);
+Router::add('GET', '/users/password', HomeController::class, 'updatePassword',
+[MustLoginMiddleware::class]);
+Router::add('POST', '/users/password', HomeController::class, 'postUpdatePassword',
+[MustLoginMiddleware::class]);
+
 
 Router::run();
