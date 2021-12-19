@@ -24,6 +24,8 @@ ADD CONSTRAINT fk_sessions_user
     FOREIGN KEY (user_id)
         REFERENCES users(id);
 ```
+## Masuk ke direcrory hasil download
+> cd login-management
 ## Install library
 > composer install 
 ## Manjalankan autoload
