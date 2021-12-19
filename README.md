@@ -5,7 +5,9 @@
 * **Mysql**
 * **Git**
 ## Download Repository
-> git clone  https://github.com/tatastuhu/login-management.git
+```console
+git clone  https://github.com/tatastuhu/login-management.git
+```
 ## Setup Database
 setup dabase bisa di lakukan dengan cara mengguanakan file database.sql
 ```sql
@@ -30,10 +32,18 @@ ADD CONSTRAINT fk_sessions_user
         REFERENCES users(id);
 ```
 ## Masuk Ke Direcrory Hasil Download
-> cd login-management
+```console
+cd login-management
+```
 ## Install Library
-> composer install 
+```console
+composer install 
+```
 ## Manjalankan Autoload
-> composer dump-autoload 
+```console
+composer dump-autoload
+```
 ## Menjalankan Program
-> cd public; php -S localhost:8080 
+```console
+cd public; php -S localhost:8080 
+```
