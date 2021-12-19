@@ -7,6 +7,7 @@ use Tatas\Belajar\PHP\MVC\Domain\User;
 use Tatas\Belajar\PHP\MVC\Exception\ValidationException;
 use Tatas\Belajar\PHP\MVC\Model\UserLoginRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserRegisterRequest;
+use Tatas\Belajar\PHP\MVC\Model\UserUpdateProfileRequest;
 use Tatas\Belajar\PHP\MVC\Repository\UserRepository;
 use Tatas\Belajar\PHP\MVC\Repository\SessionRepository;
 
@@ -84,6 +85,33 @@ class UserServiceTest extends TestCase{
         $response=$this->userService->login($request);
         self::assertEquals($request->id,$response->user->id);
         self::assertTrue(password_verify($request->password,$response->user->password));
+    }
+    function testUpdateSuccess(){
+        $user=new User();
+        $user->id="tatas";
+        $user->name="Tatas";
+        $user->password="rahasia";
+        $this->userRepository->save($user);
+        $request=new UserUpdateProfileRequest();
+        $request->id="tatas";
+        $request->name="Tuhu";
+        $this->userService->updateProfile($request);
+        $result=$this->userRepository->findById($user->id);
+        self::assertEquals($request->name,$result->name);
+    }
+    function testUpdateValidationError(){
+        $this->expectException(ValidationException::class);
+        $request=new UserUpdateProfileRequest();
+        $request->id="";
+        $request->name="";
+        $this->userService->updateProfile($request);
+    }
+    function testUpdateNotFound(){
+        $this->expectException(ValidationException::class);
+        $request=new UserUpdateProfileRequest();
+        $request->id="notFound";
+        $request->name="notFound";
+        $this->userService->updateProfile($request);
     }
     
 }

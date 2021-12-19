@@ -9,6 +9,8 @@ use Tatas\Belajar\PHP\MVC\Model\UserLoginRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserLoginResponse;
 use Tatas\Belajar\PHP\MVC\Model\UserRegisterRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserRegisterResponse;
+use Tatas\Belajar\PHP\MVC\Model\UserUpdateProfileRequest;
+use Tatas\Belajar\PHP\MVC\Model\UserUpdateProfileResponse;
 use Tatas\Belajar\PHP\MVC\Repository\UserRepository;
 
 class UserService{
@@ -67,4 +69,31 @@ class UserService{
             throw new ValidationException("id and password cannot blank");
         }
     }
+    public function updateProfile(UserUpdateProfileRequest $request):UserUpdateProfileResponse {
+        $this->validateUserProfileUpdateRequest($request);
+        try{
+            Database::beginTransaction();
+            $user=$this->userRepository->findById($request->id);
+            if($user==null){
+                throw new ValidationException("User is not found");
+            }
+            $user->name=$request->name;
+            $this->userRepository->update($user);
+            Database::commitTransaction();
+            $response=new UserUpdateProfileResponse();
+            $response->user=$user;
+            return $response;
+        }catch(Exception $exception){
+            Database::rollbackTransaction();
+            throw $exception;
+        }
+    }
+    private function validateUserProfileUpdateRequest(UserUpdateProfileRequest $request)
+    {
+        if ($request->id == null || $request->name == null ||
+            trim($request->id) == "" || trim($request->name) == "") {
+            throw new ValidationException("Id, Name can not blank");
+        }
+    }
+
 }

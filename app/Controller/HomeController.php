@@ -75,5 +75,15 @@ class HomeController
         $this->sessionService->destroy();
         View::redirect('/');
     }
+    public function updateProfile(){
+        $user=$this->sessionService->current();
+        view::render('updateProfile',[
+            "title"=>"Update profile",
+            "userid"=>$user->id
+        ]);
+    }
+    public function postUpdateProfile(){
+
+    }
 
 }
