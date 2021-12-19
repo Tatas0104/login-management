@@ -1,6 +1,6 @@
 # PHP LOGIN MANAGEMENT
 ## Requirement
-* **PHP VERSI => 8**
+* **PHP VERSI => 8.0.0**
 * **Composer**
 * **Mysql**
 * **Git**
