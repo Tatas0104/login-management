@@ -7,6 +7,7 @@ use Tatas\Belajar\PHP\MVC\Domain\User;
 use Tatas\Belajar\PHP\MVC\Exception\ValidationException;
 use Tatas\Belajar\PHP\MVC\Model\UserLoginRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserRegisterRequest;
+use Tatas\Belajar\PHP\MVC\Model\UserUpdatePasswordRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserUpdateProfileRequest;
 use Tatas\Belajar\PHP\MVC\Repository\UserRepository;
 use Tatas\Belajar\PHP\MVC\Repository\SessionRepository;
@@ -113,5 +114,47 @@ class UserServiceTest extends TestCase{
         $request->name="notFound";
         $this->userService->updateProfile($request);
     }
-    
+    function testUpdatePasswordSuccess(){
+        $user=new User();
+        $user->id="tatas";
+        $user->name="Tatas";
+        $user->password=password_hash("rahasia",PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+        $request=new UserUpdatePasswordRequest();
+        $request->id="tatas";
+        $request->oldPassword="rahasia";
+        $request->newPassword="new";
+        $this->userService->updatePassword($request);
+        $result=$this->userRepository->findById($user->id);
+        self::assertTrue(password_verify($request->newPassword,$result->password));
+    }
+    function testUpdatePasswordVlidationError(){
+        $this->expectException(ValidationException::class);
+        $request=new UserUpdatePasswordRequest();
+        $request->id="tatas";
+        $request->oldPassword="salah";
+        $request->newPassword="new";
+        $this->userService->updatePassword($request);
+    }
+    function testUpdatePasswordWrongOldPassword(){
+        $this->expectException(ValidationException::class);
+        $user=new User();
+        $user->id="tatas";
+        $user->name="Tatas";
+        $user->password=password_hash("rahasia",PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+        $request=new UserUpdatePasswordRequest();
+        $request->id="tatas";
+        $request->oldPassword="salah";
+        $request->newPassword="new";
+        $this->userService->updatePassword($request);
+    }
+    function testUpdatePasswordNotFound(){
+        $this->expectException(ValidationException::class);
+        $request=new UserUpdatePasswordRequest();
+        $request->id="notFound";
+        $request->oldPassword="notFound";
+        $request->newPassword="rahasia";
+        $this->userService->updatePassword($request);
+    }
 }

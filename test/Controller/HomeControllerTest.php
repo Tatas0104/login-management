@@ -129,6 +129,61 @@ class HomeControllerTest extends TestCase{
         $this->expectOutputRegex("[Location: /]");
         $this->expectOutputRegex("[X-Tatas-COOKIE: ]");
     }
+    function testUpdateProfile(){
+        $user=new User();
+        $user->id="tatas";
+        $user->name="Tatas";
+        $user->password=password_hash("rahasia",PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+        $session=new Session();
+        $session->id=uniqid();
+        $session->user_id=$user->id;
+        $this->sessionRepository->save($session);
+        $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
+        $this->homeController->updateProfile();
+        $this->expectOutputRegex("[Profile]");
+        $this->expectOutputRegex("[Id]");
+        $this->expectOutputRegex("[tatas]");
+        $this->expectOutputRegex("[Name]");
+        $this->expectOutputRegex("[Tatas]");
+    }
+    function testPostUpdateProfileSuccess(){
+        $user=new User();
+        $user->id="tatas";
+        $user->name="Tatas";
+        $user->password=password_hash("rahasia",PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+        $session=new Session();
+        $session->id=uniqid();
+        $session->user_id=$user->id;
+        $this->sessionRepository->save($session);
+        $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
+        $_POST['name']="tuhu";
+        $this->homeController->postUpdateProfile();
+        $this->expectOutputRegex("[Location:/]");
+        $result=$this->userRepository->findById("tatas");
+        self::assertEquals("tuhu",$result->name);
+    }
+    function testUpdateProfileValidationError(){
+        $user=new User();
+        $user->id="tatas";
+        $user->name="Tatas";
+        $user->password=password_hash("rahasia",PASSWORD_BCRYPT);
+        $this->userRepository->save($user);
+        $session=new Session();
+        $session->id=uniqid();
+        $session->user_id=$user->id;
+        $this->sessionRepository->save($session);
+        $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
+        $_POST['name']='';
+        $this->homeController->postUpdateProfile();
+
+        $this->expectOutputRegex("[Profile]");
+        $this->expectOutputRegex("[Id]");
+        $this->expectOutputRegex("[tatas]");
+        $this->expectOutputRegex("[Name]");
+        $this->expectOutputRegex("[Id, Name can not blank]");
+    }
 }
 };
 

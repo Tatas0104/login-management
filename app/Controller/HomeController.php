@@ -2,11 +2,13 @@
 
 namespace Tatas\Belajar\PHP\MVC\Controller;
 
+
 use Tatas\Belajar\PHP\MVC\App\View;
 use Tatas\Belajar\PHP\MVC\Config\Database;
 use Tatas\Belajar\PHP\MVC\Exception\ValidationException;
 use Tatas\Belajar\PHP\MVC\Model\UserLoginRequest;
 use Tatas\Belajar\PHP\MVC\Model\UserRegisterRequest;
+use Tatas\Belajar\PHP\MVC\Model\UserUpdateProfileRequest;
 use Tatas\Belajar\PHP\MVC\Repository\SessionRepository;
 use Tatas\Belajar\PHP\MVC\Repository\UserRepository;
 use Tatas\Belajar\PHP\MVC\Service\SessionService;
@@ -79,10 +81,30 @@ class HomeController
         $user=$this->sessionService->current();
         view::render('updateProfile',[
             "title"=>"Update profile",
-            "userid"=>$user->id
+            "user"=>[
+                "id"=>$user->id,
+                "name"=>$user->name
+            ]
         ]);
     }
     public function postUpdateProfile(){
+        $user=$this->sessionService->current();
+        $request=new UserUpdateProfileRequest();
+        $request->id=$user->id;
+        $request->name=$_POST['name'];
+        try{
+            $this->userService->updateProfile($request);
+            View::redirect('/');
+        }catch(ValidationException $exception){
+            view::render('updateProfile',[
+                "title"=>"Update profile",
+                "user"=>[
+                    "id"=>$user->id,
+                    "name"=>$_POST['name']
+                ],
+                "error"=>$exception->getMessage()
+            ]);
+        }
 
     }
 
