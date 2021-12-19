@@ -29,5 +29,4 @@ ADD CONSTRAINT fk_sessions_user
 ## Manjalankan autoload
 > composer dump-autoload 
 ## menjalankan program
-> cd public
-> php -S localhost:8080 
+> cd public; php -S localhost:8080 
