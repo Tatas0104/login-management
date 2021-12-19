@@ -2,7 +2,7 @@
 ## Cara download
 > git clone  https://github.com/tatastuhu/login-management 
 ## Setup Database
-setup dabase bisa di lakukan dengan cara mengguanakn file database.sql
+setup dabase bisa di lakukan dengan cara mengguanakan file database.sql
 ```
 CREATE DATABASE php_login_management;
 
@@ -29,4 +29,5 @@ ADD CONSTRAINT fk_sessions_user
 ## Manjalankan autoload
 > composer dump-autoload 
 ## menjalankan program
-> cd public;php -S localhost:8080 
+> cd public
+> php -S localhost:8080 
