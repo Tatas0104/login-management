@@ -1,9 +1,9 @@
 # PHP LOGIN MANAGEMENT
-## Cara download
+## Download Repository
 > git clone  https://github.com/tatastuhu/login-management.git
 ## Setup Database
 setup dabase bisa di lakukan dengan cara mengguanakan file database.sql
-```
+```sql
 CREATE DATABASE php_login_management;
 
 CREATE DATABASE php_login_management_test;
@@ -24,11 +24,11 @@ ADD CONSTRAINT fk_sessions_user
     FOREIGN KEY (user_id)
         REFERENCES users(id);
 ```
-## Masuk ke direcrory hasil download
+## Masuk Ke Direcrory Hasil Download
 > cd login-management
-## Install library
+## Install Library
 > composer install 
-## Manjalankan autoload
+## Manjalankan Autoload
 > composer dump-autoload 
-## menjalankan program
+## Menjalankan Program
 > cd public; php -S localhost:8080 
