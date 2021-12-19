@@ -1,9 +1,9 @@
 # PHP LOGIN MANAGEMENT
 ## Requirement
-* PHP VERSI =>8
-* Composer
-* Mysql
-* Git
+* **PHP VERSI => 8**
+* **Composer**
+* **Mysql**
+* **Git**
 ## Download Repository
 > git clone  https://github.com/tatastuhu/login-management.git
 ## Setup Database
